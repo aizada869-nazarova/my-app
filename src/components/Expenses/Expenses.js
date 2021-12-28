@@ -1,34 +1,44 @@
-import { expenses } from "../../data/ExpenseItemData";
-import React from "react";
+import { savedExpenses } from "../../data/ExpenseItemData";
+import React, { useState } from "react";
 import "./Expenses.css";
 import ExpenseItem from "./ExpenseItem";
+import ExpensesFilter from "./ExpensesFilter";
+import NewExpense from "../NewExpense/NewExpense"
+
 
 function Expenses() {
+  const [filteredYear, setFilteredYear] = useState("2021");
+
+  const filterChangeHandler = (selectedYear) => {
+    setFilteredYear(selectedYear);
+  };
+  
+  const[expenses, setExpenses] = useState(savedExpenses)
+
+  const addExpenseHandler = (expense) => {
+    setExpenses(prevExpenses=>{
+      return [expense, ...prevExpenses]
+    });
+  };
+
+
   return (
-    <div className="expenses">
-      <ExpenseItem
-        title={expenses[0].title}
-        date={expenses[0].date}
-        amount={expenses[0].amount}
-      ></ExpenseItem>
-      <ExpenseItem
-        title={expenses[1].title}
-        date={expenses[1].date}
-        amount={expenses[1].amount}
-      ></ExpenseItem>
-      <ExpenseItem
-        title={expenses[2].title}
-        date={expenses[2].date}
-        amount={expenses[2].amount}
-      ></ExpenseItem>
-      <ExpenseItem
-        title={expenses[3].title}
-        date={expenses[3].date}
-        amount={expenses[3].amount}
-      ></ExpenseItem>
-    </div>
+    <>
+     <NewExpense onAddExpense={addExpenseHandler} />
+      <ExpensesFilter
+        selected={filteredYear}
+        onSelectedYear={filterChangeHandler} />
+      <div className="expenses">
+        {expenses.map((expense) => (
+          <ExpenseItem
+            title={expense.title}
+            date={expense.date}
+            amount={expense.amount}
+          />
+        ))}
+      </div>
+    </>
   );
 }
 
-
-export default Expenses
+export default Expenses;

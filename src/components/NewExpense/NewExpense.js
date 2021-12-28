@@ -4,7 +4,7 @@ import ExpenseForm from "./ExpenseForm";
 import "./NewExpense.css";
 import uniqid from "uniqid"
 
-const NewExpense = () => {
+const NewExpense = (props) => {
     // how to pass data from child to parent, communicate from bottom-up 
     // creating a function which recieve a param enteredExpenseData from ExpenseForm.js
     const saveExpenseDataHandler=(enteredExpenseData)=>{
@@ -12,7 +12,8 @@ const NewExpense = () => {
             ...enteredExpenseData,
             id: uniqid()
         }
-console.log(expenseData)
+
+props.onAddExpense(expenseData)
     }
   return (
     <div className="new-expense">
